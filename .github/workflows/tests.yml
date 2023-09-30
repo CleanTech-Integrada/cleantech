@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-node@v3
 
       - name: Run npm build
-        run: npm run build
+        run: npm install && npm run build
 
       - name: Copy environment file
         run: cp .env.ci .env
