@@ -26,20 +26,29 @@ defineProps({
     <Head title="Welcome"/>
 
     <Layout>
-        <div class="flex justify-between w-full">
-            <CardList :list="[
-              { name: 'Caminhão 1', available: true },
-              { name: 'Caminhão 2', available: false },
-              { name: 'Caminhão 3', available: true },
-              { name: 'Caminhão 4', available: false },
-              { name: 'Caminhão 5', available: true },
-              { name: 'Caminhão 6', available: false },
-              { name: 'Caminhão 7', available: true },
-              { name: 'Caminhão 8', available: true },
-              { name: 'Caminhão 9', available: false },
-              { name: 'Caminhão 10', available: true }
-            ]"/>
-            <Map />
+        <div class="w-5/6 h-4/6 m-auto mt-5">
+            <div class="pb-3 w-full">
+                <div class="rounded-xl navbar bg-neutral text-neutral-content">
+                    <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
+                </div>
+            </div>
+
+            <div class="flex justify-between w-full" style="min-height: 600px">
+                <CardList :list="[
+                  { name: 'Caminhão 1', available: true },
+                  { name: 'Caminhão 2', available: false },
+                  { name: 'Caminhão 3', available: true },
+                  { name: 'Caminhão 4', available: false },
+                  { name: 'Caminhão 5', available: true },
+                  { name: 'Caminhão 6', available: false },
+                  { name: 'Caminhão 7', available: true },
+                  { name: 'Caminhão 8', available: true },
+                  { name: 'Caminhão 9', available: false },
+                  { name: 'Caminhão 10', available: true }
+                ]"/>
+
+                <Map/>
+            </div>
         </div>
     </Layout>
 </template>

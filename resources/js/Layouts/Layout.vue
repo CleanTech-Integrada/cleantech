@@ -6,13 +6,9 @@ import Header from "@/Layouts/Header.vue";
 
 <template>
     <div
-        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-950 selection:bg-red-500 selection:text-white"
+        class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-950 selection:bg-red-500 selection:text-white flex flex-col"
     >
-        <Header/>
-
-        <div class="w-5/6 flex m-auto">
-            <slot/>
-        </div>
+        <slot/>
 
         <Footer/>
     </div>

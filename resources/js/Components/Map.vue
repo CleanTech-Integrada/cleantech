@@ -15,7 +15,7 @@ onMounted(() => {
 
 <template>
     <div class="bg-base-200 p-2 rounded-xl w-3/5">
-        <div id="map" style="min-height: 100%">
+        <div id="map" class="min-h-full rounded-xl">
         </div>
     </div>
 </template>
