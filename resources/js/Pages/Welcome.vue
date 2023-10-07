@@ -27,12 +27,6 @@ defineProps({
 
     <Layout>
         <div class="w-5/6 h-4/6 m-auto mt-5">
-            <div class="pb-3 w-full">
-                <div class="rounded-xl navbar bg-neutral text-neutral-content">
-                    <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
-                </div>
-            </div>
-
             <div class="flex justify-between w-full" style="min-height: 600px">
                 <CardList :list="[
                   { name: 'Caminhão 1', available: true },
