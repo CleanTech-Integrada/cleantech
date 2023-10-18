@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RelatorioController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,6 +13,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
+
+Route::resource('/relatorios', RelatorioController::class)->only(['index', 'store', 'show']);
 
 Route::get('/about', function () {
     return Inertia::render('About', [

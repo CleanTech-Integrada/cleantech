@@ -1,8 +1,8 @@
 <script setup>
 import * as Leaflet from 'leaflet/dist/leaflet.js';
-import {onMounted, ref, watchEffect} from "vue";
+import {onMounted, reactive, ref, watchEffect} from "vue";
 import {useMap} from "@/Composables/map.js";
-import {remove} from "leaflet/src/dom/DomUtil.js";
+import {router} from "@inertiajs/vue3";
 
 let map;
 const {points, addPoint} = useMap();
@@ -60,7 +60,6 @@ function handleRouteButton(disable) {
 }
 
 function addMarker(latlng) {
-    // if (points.value.length > 0 && typeof points.value[0] !== 'undefined') return;
     noPoint.value.remove();
 
     const marker = Leaflet.marker(latlng, {
@@ -76,6 +75,14 @@ function removeMarker(marker, index) {
     points.value.splice(index, 1);
 }
 
+const form = reactive({
+    pontos: [],
+})
+
+function submit() {
+    router.post('/relatorios', form);
+}
+
 </script>
 
 <template>
@@ -87,13 +94,13 @@ function removeMarker(marker, index) {
             </div>
         </div>
         <div class="ms-5 w-3/6">
-            <div>
+            <form @submit.prevent="submit">
                 <div class="tooltip tooltip-bottom w-full" data-tip="hello" ref="routeTooltip">
-                    <button class="w-full btn btn-active btn-success" ref="routeBtn">
+                    <button type="submit" class="w-full btn btn-active btn-success" ref="routeBtn">
                         Gerar Rotéiro
                     </button>
                 </div>
-            </div>
+            </form>
             <div class="bg-base-200 p-2 rounded-xl h-96 mt-4 overflow-y-scroll">
                 <div class="bg-base-300 rounded-xl p-4 text-center" ref="noPoint">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="mx-auto" viewBox="0 0 16 16">
