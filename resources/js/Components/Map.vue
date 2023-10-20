@@ -20,7 +20,6 @@ const routeBtn = ref(null), routeTooltip = ref(null), noPoint = ref(null);
 const {points, addPoint} = useMap();
 
 onMounted(() => {
-    console.log(props.initialLatLng)
     map = Leaflet.map('map').setView(props.initialLatLng, 13);
 
     Leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

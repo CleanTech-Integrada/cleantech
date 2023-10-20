@@ -11,6 +11,10 @@ class RoteiroController extends Controller
     public function index()
     {
         $roteiros = Roteiro::all();
+
+        return Inertia::render('Roteiro/Index', [
+            'roteiros' => $roteiros
+        ]);
     }
 
     public static function show(Roteiro $roteiro)

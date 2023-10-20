@@ -1,5 +1,5 @@
 <script setup>
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import {onMounted} from "vue";
 import * as L from "leaflet/dist/leaflet.js";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.js';
@@ -36,7 +36,14 @@ onMounted(() => {
     L.Routing.control({
         waypoints: waypoints
     }).addTo(map);
+
+    removeCollapser();
 });
+
+function removeCollapser() {
+    const collapser = document.querySelector('.leaflet-routing-collapsible');
+    collapser.remove();
+}
 
 </script>
 
@@ -46,14 +53,14 @@ onMounted(() => {
 
         <div class="w-5/6 h-4/6 m-auto mt-5">
             <div>
-                <button class="btn btn-outline btn-info mb-2">
+                <Link :href="route('home')" class="btn btn-outline btn-info mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-5 w-5"
                          viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
                               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                     </svg>
                     Voltar
-                </button>
+                </Link>
                 <div class="flex justify-between w-full" style="min-height: 600px">
                     <div class="w-3/6">
                         <div class="bg-base-200 p-2 rounded-xl h-full">
@@ -70,10 +77,13 @@ onMounted(() => {
                                     </svg>
                                     Transporte Sugerido
                                 </div>
-                                <div>
+                                <div class="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-10 h-10" viewBox="0 0 16 16">
                                         <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                                     </svg>
+                                    <span class="ms-2 text-xl">
+                                        Charrete
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -85,4 +95,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.leaflet-routing-container, .leaflet-routing-collapsible, .leaflet-routing-alternatives-container {
+    display: none !important;
+}
 </style>
