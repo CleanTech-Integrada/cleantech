@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link} from "@inertiajs/vue3";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import * as L from "leaflet/dist/leaflet.js";
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.js';
 import Layout from "@/Layouts/Layout.vue";
@@ -13,6 +13,7 @@ const props = defineProps({
 });
 
 let map;
+const km = ref(null), time = ref(null);
 
 onMounted(() => {
     const pontos = JSON.parse(props.roteiro.pontos);
@@ -21,6 +22,7 @@ onMounted(() => {
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
+        draggable: false,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
@@ -33,13 +35,24 @@ onMounted(() => {
         waypoints.push(L.latLng(marker[0], marker[1]));
     }
 
-    L.Routing.control({
-        waypoints: waypoints
+    const routeControl = L.Routing.control({
+        waypoints: waypoints,
+        routeWhileDragging: false,
     }).addTo(map);
+    routeControl.on('routesfound', (e) => {
+        let routes = e.routes;
+        let summary = routes[0].summary;
+        for (const summaryElement of routes) {
+            console.log(summaryElement.summary.totalDistance / 1000)
+        }
+        km.value.innerHTML = parseFloat(summary.totalDistance / 1000).toFixed(2);
+        time.value.innerHTML = Math.round(summary.totalTime % 360 / 60);
+    });
 
     removeCollapser();
 });
 
+// Remove collapser of leaflet
 function removeCollapser() {
     const collapser = document.querySelector('.leaflet-routing-collapsible');
     collapser.remove();
@@ -54,7 +67,7 @@ function removeCollapser() {
 
         <div class="w-5/6 h-4/6 m-auto mt-5">
             <div>
-                <Link :href="route('home')" class="btn btn-outline btn-info mb-2">
+                <Link :href="route('roteiros.index')" class="btn btn-outline btn-info mb-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="h-5 w-5"
                          viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -84,8 +97,8 @@ function removeCollapser() {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-10 h-10" viewBox="0 0 16 16">
                                         <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                                     </svg>
+                                    <span class="ms-2">Caminhão</span>
                                 </div>
-                                Caminhão
                             </div>
                         </div>
                         <div class="stats shadow mt-5 ">
@@ -100,7 +113,9 @@ function removeCollapser() {
                                     </svg>
                                 </div>
                                 <div class="stat-title">Distancia </div>
-                                <div class="stat-value text-primary">10 KM</div>
+                                <div class="stat-value text-primary">
+                                    <span ref="km"></span> KM
+                                </div>
                                 <div class="stat-desc">distancia entre os pontos</div>
                             </div>
                             <div class="stat">
@@ -113,10 +128,11 @@ function removeCollapser() {
                                     </svg>
                                 </div>
                                 <div class="stat-title">Tempo</div>
-                                <div class="stat-value text-secondary">20 min</div>
+                                <div class="stat-value text-secondary">
+                                    <span ref="time"></span> min.
+                                </div>
                                 <div class="stat-desc">a uma média de 40km/h</div>
                             </div>
-
                         </div>
                     </div>
                 </div>

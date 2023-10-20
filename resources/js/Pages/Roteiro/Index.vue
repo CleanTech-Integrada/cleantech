@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 const props = defineProps({
     roteiros: {
@@ -18,14 +18,13 @@ const props = defineProps({
             <div>
                 <div
                     v-for="roteiro in roteiros"
-                    class="card p-5 w-96 bg-base-100 shadow-xl mb-2">
+                    class="card p-5 w-full bg-base-100 shadow-xl mb-2">
                     <div class="justify-between items-center flex">
                         <div>
                             <h2 class="card-title">Roteiro {{ roteiro.id }}</h2>
-                            <span class="ms-1">{{ roteiro.created_at }}</span>
                         </div>
                         <div class="card-actions justify-end">
-                            <button class="btn btn-primary">Buy Now</button>
+                            <Link :href="route('roteiros.show', roteiro)" class="btn btn-primary">Visualizar Roteiro</Link>
                         </div>
                     </div>
                 </div>

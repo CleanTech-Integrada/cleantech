@@ -2,7 +2,8 @@
 import * as Leaflet from 'leaflet/dist/leaflet.js';
 import {onMounted, reactive, ref, watchEffect} from "vue";
 import {useMap} from "@/Composables/map.js";
-import { router } from '@inertiajs/vue3';
+import {router} from '@inertiajs/vue3';
+import axios from "axios";
 
 const props = defineProps({
     initialLatLng: {
@@ -84,9 +85,46 @@ async function submit() {
         pontos.push([coord[0], coord[1]]);
     });
 
+    const res = await requestApi(pontos);
+
     router.post('/roteiros', {
         pontos: JSON.stringify(pontos)
     });
+}
+
+async function requestApi(coords) {
+    let pontos = [];
+
+    // SIM, EU FIZ UM COUNT
+    // PERDÃO DEUS
+    let count = 1;
+
+    for (const point of points.value) {
+        let pontosIndex = [];
+
+        let countInner = 1;
+        for (const ponto of points.value) {
+            if (`place${count}` === `place${countInner}`) {
+                countInner++;
+                continue;
+            }
+
+            let length = map.distance(point[2]._latlng, ponto[2]._latlng);
+
+            pontosIndex.push(`{place${countInner}: ${length}}`);
+            countInner++;
+        }
+
+        pontos.push(`{place${count}: ${pontosIndex}}`);
+        count++;
+    }
+
+    try {
+        return await axios.get(
+            `http://localhost:8090/core?points=${JSON.stringify(pontos)}&coords=${JSON.stringify(coords)}`
+        );
+    } catch (exception) {
+    }
 }
 
 </script>
